@@ -1,0 +1,30 @@
+.container__card--character {
+  background-position: center;
+  background-size: cover;
+  border-radius: 1rem;
+  box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.2);
+  margin: 1.5rem;
+  overflow: hidden;
+  width: 16vw;
+  height: 30vh;
+  div {
+    height: 80%;
+    width: 100%;
+    .img__character {
+      height: 100%;
+      width: 100%;
+    }
+  }
+  div:hover {
+    cursor: pointer;
+  }
+}
+
+.container__cards--home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .container__cards {
+    display: flex;
+  }
+}
