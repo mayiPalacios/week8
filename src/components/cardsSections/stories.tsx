@@ -2,11 +2,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { State } from "../../redux/useRedux";
 import { useEffect, useState } from "react";
 import { IstoriesState } from "../../redux/useRedux/storiesReducer";
+import _ from "lodash";
 import {
   GET_STORIES_REQUEST,
   GetStoriesSuccessAction,
 } from "../../redux/ActionsMethods/storiesActionType";
-import { getStoriesCard } from "../../utils/fetchMethods";
+import {
+  getStoriesCard,
+  getStoriesbyCharacter,
+} from "../../utils/fetchMethods";
 import { GET_STORIES_FAILURE } from "../../redux/ActionsMethods/storiesActionType";
 
 const Stories = () => {
@@ -18,6 +22,8 @@ const Stories = () => {
 
   const indexOfLastStory = currentPage * storyPerPage;
   const indexOfFirStory = indexOfLastStory - storyPerPage;
+  const [character, setCharacter] = useState("");
+  let cases = "";
   const currentStory =
     story.story && story.story.slice(indexOfFirStory, indexOfLastStory);
   const pageNumbers = [];
@@ -40,7 +46,13 @@ const Stories = () => {
     const fetchStories = async () => {
       dispatch({ type: GET_STORIES_REQUEST });
       try {
-        const response = await getStoriesCard();
+        let response = undefined;
+        if (character) {
+          response = await getStoriesbyCharacter(character);
+        } else {
+          response = await getStoriesCard();
+        }
+
         const result = response;
         if (result !== undefined) {
           const action: GetStoriesSuccessAction = {
@@ -59,16 +71,33 @@ const Stories = () => {
       }
     };
     fetchStories();
-  }, [dispatch]);
+  }, [dispatch, cases, character]);
+
+  const handleCharacter = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setCharacter(event.target.value);
+
+    cases = "character";
+  };
+
   return (
     <div className="container__cards--home">
-      <div>{renderPageNumbers}</div>
-      <div className="container__cards">
+      <div>
+        <div>{renderPageNumbers}</div>
+        <div>
+          <select name="" id="" onChange={handleCharacter}>
+            <option value="">select character</option>
+            <option value="1009610">Spiderman</option>
+            <option value="1009368">Iron Man</option>
+            <option value="1009220">Captain America</option>
+            <option value="1009189">Black Widow</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="container__cards--story">
         {currentStory &&
           currentStory.map((story) => (
-            <div key={story.id} className="container__card--character">
-              <div></div>
-
+            <div key={story.id} className="container__card--story">
               <h2>{story.title}</h2>
             </div>
           ))}
