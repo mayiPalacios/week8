@@ -1,13 +1,19 @@
 import { useSelector, useDispatch } from "react-redux";
 import { State } from "../../redux/useRedux";
 import { useEffect, useState } from "react";
-import { getComicsCard } from "../../utils/fetchMethods";
+import _ from "lodash";
+import {
+  getComicbyFormat,
+  getComicbyTitle,
+  getComicsCard,
+} from "../../utils/fetchMethods";
 import {
   GET_COMICS_FAILURE,
   GET_COMICS_REQUEST,
   GetComicsSuccessAction,
 } from "../../redux/ActionsMethods/comicActionType";
 import { IcomicsState } from "../../redux/useRedux/comicReducer";
+let cases = "";
 
 const Comics = () => {
   const comics = useSelector((state: State) => state.comics) as IcomicsState;
@@ -15,6 +21,8 @@ const Comics = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [comicsPerPage] = useState(5);
+  const [comicFormat, setFormat] = useState("");
+  const [title, setTitle] = useState("");
 
   const indexOfLastComic = currentPage * comicsPerPage;
   const indexOfFirstCharacter = indexOfLastComic - comicsPerPage;
@@ -37,7 +45,18 @@ const Comics = () => {
     const fetchComic = async () => {
       dispatch({ type: GET_COMICS_REQUEST });
       try {
-        const response = await getComicsCard();
+        let response = undefined;
+        switch (cases) {
+          case "":
+            response = await getComicsCard();
+            break;
+          case "formats":
+            response = await getComicbyFormat(comicFormat);
+            break;
+          case "title":
+            response = await getComicbyTitle(title);
+        }
+
         const result = response;
         if (result !== undefined) {
           const action: GetComicsSuccessAction = {
@@ -56,7 +75,21 @@ const Comics = () => {
       }
     };
     fetchComic();
-  }, [dispatch]);
+  }, [dispatch, comicFormat, title]);
+
+  const handleFormat = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setFormat(event.target.value);
+    cases = "formats";
+  };
+
+  const handleTitle = _.debounce((event) => {
+    if (event.target.value !== "") {
+      setTitle("titleStartsWith=" + event.target.value);
+    } else {
+      setTitle(event.target.value);
+    }
+    cases = "title";
+  }, 1000);
 
   const renderPageNumbers = pageNumbers.map((number) => {
     return (
@@ -71,12 +104,16 @@ const Comics = () => {
       <div>
         <div>{renderPageNumbers}</div>
         <div>
-          <select name="" id="">
+          <select name="" id="" onChange={handleFormat}>
+            <option value="">Select comic format</option>
             <option value="comic">comic</option>
-            <option value="graphic">graphic novel</option>
+            <option value="graphic%20novel">graphic novel</option>
             <option value="digital%20comic">Digital comic</option>
             <option value="trade%20paperback">trade paperback</option>
           </select>
+        </div>
+        <div>
+          <input type="text" onChange={handleTitle} />
         </div>
       </div>
 

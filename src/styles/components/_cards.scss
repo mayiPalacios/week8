@@ -28,3 +28,23 @@
     display: flex;
   }
 }
+
+.container__cards--story {
+  gap: 20px;
+  display: flex;
+  flex-direction: column;
+
+  .container__card--story {
+    border-radius: 1rem;
+    box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.2);
+    height: 6vh;
+    display: flex;
+    align-items: center;
+
+    h2 {
+      margin: 30px;
+      margin-top: 12px;
+      margin-bottom: 12px;
+    }
+  }
+}
