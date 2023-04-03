@@ -68,7 +68,18 @@ const Comics = () => {
 
   return (
     <div className="container__cards--home">
-      <div>{renderPageNumbers}</div>
+      <div>
+        <div>{renderPageNumbers}</div>
+        <div>
+          <select name="" id="">
+            <option value="comic">comic</option>
+            <option value="graphic">graphic novel</option>
+            <option value="digital%20comic">Digital comic</option>
+            <option value="trade%20paperback">trade paperback</option>
+          </select>
+        </div>
+      </div>
+
       <div className="container__cards">
         {currentComics &&
           currentComics.map((comic) => (
