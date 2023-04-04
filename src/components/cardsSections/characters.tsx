@@ -18,6 +18,7 @@ import {
   removeBookmark,
 } from "../../redux/useRedux/bookMarkReducer";
 import { persistor, store } from "../../redux/store/store";
+import { hideCard, showAllHideCards } from "../../redux/useRedux/hideReducer";
 
 let cases = "";
 const Characters = () => {
@@ -32,6 +33,7 @@ const Characters = () => {
   const [filterbyStory, setFilterbyStory] = useState("");
   const [search, setSearch] = useState("");
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [hide, setHideCard] = useState<number[]>();
 
   const indexOfLastCharacter = currentPage * charactersPerPage;
   const indexOfFirstCharacter = indexOfLastCharacter - charactersPerPage;
@@ -129,6 +131,18 @@ const Characters = () => {
     console.log(store.getState().bookmark.bookmarks);
   };
 
+  const handleHide = (id: number) => {
+    dispatch(hideCard(id));
+    persistor.persist();
+    setHideCard(store.getState().hideCard.id);
+  };
+
+  const handleShowHideCards = () => {
+    dispatch(showAllHideCards());
+    persistor.persist();
+    setHideCard([]);
+  };
+
   const getBookmarkImageUrl = () => {
     if (isBookmarked) {
       return "https://cdn-icons-png.flaticon.com/512/5662/5662990.png";
@@ -145,8 +159,15 @@ const Characters = () => {
     );
   });
 
+  useEffect(() => {
+    setHideCard(store.getState().hideCard.id);
+  }, []);
+
   return (
     <div className="container__cards--home">
+      <div>
+        <button onClick={handleShowHideCards}>Show all hide cards</button>
+      </div>
       <div>
         <div>{renderPageNumbers}</div>
         <div>
@@ -196,30 +217,32 @@ const Characters = () => {
 
       <div className="container__cards">
         {currentCharacters &&
-          currentCharacters.map((character) => (
-            <div key={character.id} className="container__card--character">
-              <div>
-                <img
-                  className="img__character"
-                  alt={character.name}
-                  src={`${character.thumbnail.path}.${character.thumbnail.extension}`}
-                />
-              </div>
-              <div className="container__btn--title">
-                <h2>{character.name}</h2>
-
-                <button onClick={() => handleSaveCard(character)}>
-                  <img src={getBookmarkImageUrl()} alt="saveCard" />
-                </button>
-                <button>
+          currentCharacters
+            .filter((noHide) => !hide?.some((hidden) => hidden === noHide.id))
+            .map((character) => (
+              <div key={character.id} className="container__card--character">
+                <div>
                   <img
-                    src="https://cdn-icons-png.flaticon.com/512/9794/9794281.png"
-                    alt="not-show"
+                    className="img__character"
+                    alt={character.name}
+                    src={`${character.thumbnail.path}.${character.thumbnail.extension}`}
                   />
-                </button>
+                </div>
+                <div className="container__btn--title">
+                  <h2>{character.name}</h2>
+
+                  <button onClick={() => handleSaveCard(character)}>
+                    <img src={getBookmarkImageUrl()} alt="saveCard" />
+                  </button>
+                  <button onClick={() => handleHide(character.id)}>
+                    <img
+                      src="https://cdn-icons-png.flaticon.com/512/9794/9794281.png"
+                      alt="not-show"
+                    />
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
       </div>
     </div>
   );
