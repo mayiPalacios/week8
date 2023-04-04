@@ -1,9 +1,13 @@
-import { AnyAction, Reducer } from "redux";
+import { Reducer } from "redux";
 import { State } from ".";
-import { IMarvelCharacter } from "../../interfaces/InterfacesMain";
+import {
+  IMarvelCharacter,
+  IMarvelComics,
+} from "../../interfaces/InterfacesMain";
+import { Ibookmark } from "../../interfaces/InterfacesMain";
 
 interface BookmarkState {
-  bookmarks: IMarvelCharacter[];
+  bookmarks: Ibookmark[];
 }
 
 const initialState: BookmarkState = {
@@ -12,8 +16,9 @@ const initialState: BookmarkState = {
 
 const ADD_BOOKMARK = "bookmark/addBookmark";
 const REMOVE_BOOKMARK = "bookmark/removeBookmark";
+const REMOVE_ALL_BOOKMARKS = "bookmark/removeAllBookmarks";
 
-export const addBookmark = (bookmark: IMarvelCharacter) => {
+export const addBookmark = (bookmark: IMarvelCharacter | IMarvelComics) => {
   return {
     type: ADD_BOOKMARK,
     payload: bookmark,
@@ -27,7 +32,13 @@ export const removeBookmark = (index: number) => {
   };
 };
 
-export const bookmarkReducer: Reducer<BookmarkState, AnyAction> = (
+export const removeAllBookmarks = () => {
+  return {
+    type: REMOVE_ALL_BOOKMARKS,
+  };
+};
+
+export const bookmarkReducer: Reducer<BookmarkState> = (
   state = initialState,
   action
 ) => {
@@ -42,6 +53,10 @@ export const bookmarkReducer: Reducer<BookmarkState, AnyAction> = (
         ...state,
         bookmarks: state.bookmarks.filter((_, i) => i !== action.payload),
       };
+
+    case REMOVE_ALL_BOOKMARKS:
+      return initialState;
+
     default:
       return state;
   }

@@ -5,8 +5,6 @@ import { GET_CHARACTERS_FAILURE } from "../../redux/ActionsMethods/characterActi
 import { GET_CHARACTERS_REQUEST } from "../../redux/ActionsMethods/characterActionTypes";
 import { useEffect, useState } from "react";
 import _ from "lodash";
-import { Persistor } from "redux-persist";
-import { Store } from "redux";
 import { IcharactersState } from "../../redux/useRedux/characterReducer";
 import {
   getCharacterCards,
