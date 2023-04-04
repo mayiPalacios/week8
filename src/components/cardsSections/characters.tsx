@@ -5,6 +5,8 @@ import { GET_CHARACTERS_FAILURE } from "../../redux/ActionsMethods/characterActi
 import { GET_CHARACTERS_REQUEST } from "../../redux/ActionsMethods/characterActionTypes";
 import { useEffect, useState } from "react";
 import _ from "lodash";
+import { Persistor } from "redux-persist";
+import { Store } from "redux";
 import { IcharactersState } from "../../redux/useRedux/characterReducer";
 import {
   getCharacterCards,
@@ -12,6 +14,13 @@ import {
   getCharactersbyComics,
   getCharactersbyStories,
 } from "../../utils/fetchMethods";
+import { IMarvelCharacter } from "../../interfaces/InterfacesMain";
+import {
+  addBookmark,
+  removeBookmark,
+} from "../../redux/useRedux/bookMarkReducer";
+import { persistor, store } from "../../redux/store/store";
+
 let cases = "";
 const Characters = () => {
   const characters = useSelector(
@@ -24,6 +33,7 @@ const Characters = () => {
   const [filterbyComic, setFilterbycomic] = useState("");
   const [filterbyStory, setFilterbyStory] = useState("");
   const [search, setSearch] = useState("");
+  const [isBookmarked, setIsBookmarked] = useState(false);
 
   const indexOfLastCharacter = currentPage * charactersPerPage;
   const indexOfFirstCharacter = indexOfLastCharacter - charactersPerPage;
@@ -105,6 +115,30 @@ const Characters = () => {
     cases = "name";
   }, 1000);
 
+  const handleSaveCard = (card: IMarvelCharacter) => {
+    window.alert(card.name);
+
+    const bookmarks = store.getState().bookmark.bookmarks;
+    const index = bookmarks.findIndex((bookmark) => bookmark.id === card.id);
+    if (index !== -1) {
+      dispatch(removeBookmark(index));
+      setIsBookmarked(false);
+    } else {
+      setIsBookmarked(true);
+      dispatch(addBookmark(card));
+      persistor.persist();
+    }
+    console.log(store.getState().bookmark.bookmarks);
+  };
+
+  const getBookmarkImageUrl = () => {
+    if (isBookmarked) {
+      return "https://cdn-icons-png.flaticon.com/512/5662/5662990.png";
+    } else {
+      return "https://cdn-icons-png.flaticon.com/512/5668/5668020.png";
+    }
+  };
+
   const renderPageNumbers = pageNumbers.map((number) => {
     return (
       <button key={number} onClick={() => setCurrentPage(number)}>
@@ -173,8 +207,19 @@ const Characters = () => {
                   src={`${character.thumbnail.path}.${character.thumbnail.extension}`}
                 />
               </div>
+              <div className="container__btn--title">
+                <h2>{character.name}</h2>
 
-              <h2>{character.name}</h2>
+                <button onClick={() => handleSaveCard(character)}>
+                  <img src={getBookmarkImageUrl()} alt="saveCard" />
+                </button>
+                <button>
+                  <img
+                    src="https://cdn-icons-png.flaticon.com/512/9794/9794281.png"
+                    alt="not-show"
+                  />
+                </button>
+              </div>
             </div>
           ))}
       </div>
