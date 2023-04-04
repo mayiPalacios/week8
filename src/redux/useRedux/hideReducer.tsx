@@ -2,6 +2,7 @@ import { Reducer } from "redux";
 import { State } from ".";
 
 const HIDE_CARD = "HIDE_CARD";
+const SHOW_CARD = "SHOW_CARD";
 
 interface Ihide {
   id: number[];
@@ -18,6 +19,12 @@ export const hideCard = (index: number) => {
   };
 };
 
+export const showAllHideCards = () => {
+  return {
+    type: SHOW_CARD,
+  };
+};
+
 export const hideReducer: Reducer<Ihide> = (state = initialState, action) => {
   switch (action.type) {
     case HIDE_CARD:
@@ -25,6 +32,9 @@ export const hideReducer: Reducer<Ihide> = (state = initialState, action) => {
         ...state,
         id: [...state.id, action.payload],
       };
+
+    case SHOW_CARD:
+      return initialState;
 
     default:
       return state;

@@ -54,8 +54,6 @@ const MainBookMark = () => {
     dispatch(removeAllBookmarks());
   };
 
-  const handleHide = () => {};
-
   return (
     <div className="container__cards--home">
       <div>
