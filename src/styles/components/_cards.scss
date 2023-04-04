@@ -6,9 +6,9 @@
   margin: 1.5rem;
   overflow: hidden;
   width: 16vw;
-  height: 30vh;
+  height: 35vh;
   div {
-    height: 80%;
+    height: 75%;
     width: 100%;
     .img__character {
       height: 100%;
@@ -26,5 +26,43 @@
   align-items: center;
   .container__cards {
     display: flex;
+  }
+}
+
+.container__cards--story {
+  gap: 20px;
+  display: flex;
+  flex-direction: column;
+
+  .container__card--story {
+    border-radius: 1rem;
+    box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.2);
+    height: 6vh;
+    display: flex;
+    align-items: center;
+
+    h2 {
+      margin: 30px;
+      margin-top: 12px;
+      margin-bottom: 12px;
+    }
+  }
+}
+
+.container__btn--title {
+  display: flex;
+  justify-content: space-around;
+
+  button {
+    margin-top: 12px;
+    height: 4vh;
+    background-color: transparent;
+    border: none;
+    img {
+      height: 4vh;
+    }
+  }
+  button:hover {
+    cursor: pointer;
   }
 }

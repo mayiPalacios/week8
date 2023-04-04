@@ -34,6 +34,10 @@ export interface IMarvelComics {
   };
 }
 
+export interface Ibookmark extends IMarvelCharacter, IMarvelComics {
+  bookmarkedCards: boolean;
+}
+
 export interface IMarvelApiResponseStories {
   code: number;
   status: string;
