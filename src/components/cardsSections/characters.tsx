@@ -33,7 +33,6 @@ const Characters = () => {
   const [filterbyStory, setFilterbyStory] = useState("");
   const [search, setSearch] = useState("");
   const [hide, setHideCard] = useState<number[]>();
-  const [isSave, setSave] = useState();
   const indexOfLastCharacter = currentPage * charactersPerPage;
   const indexOfFirstCharacter = indexOfLastCharacter - charactersPerPage;
   const currentCharacters =
