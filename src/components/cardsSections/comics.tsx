@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { State } from "../../redux/useRedux";
 import { useEffect, useState } from "react";
 import _ from "lodash";
+import { hideCard, showAllHideCards } from "../../redux/useRedux/hideReducer";
 import {
   getComicbyFormat,
   getComicbyTitle,
@@ -30,8 +31,7 @@ const Comics = () => {
   const [comicsPerPage] = useState(5);
   const [comicFormat, setFormat] = useState("");
   const [title, setTitle] = useState("");
-  const [isBookmarked, setIsBookmarked] = useState(false);
-
+  const [hide, setHideCard] = useState<number[]>();
   const indexOfLastComic = currentPage * comicsPerPage;
   const indexOfFirstCharacter = indexOfLastComic - comicsPerPage;
   const currentComics =
@@ -90,20 +90,26 @@ const Comics = () => {
     cases = "formats";
   };
 
-  const handleSaveCard = (card: IMarvelComics) => {
-    window.alert(card.title);
+  const handleHide = (id: number) => {
+    dispatch(hideCard(id));
+    persistor.persist();
+    setHideCard(store.getState().hideCard.id);
+  };
 
+  useEffect(() => {
+    setHideCard(store.getState().hideCard.id);
+  }, []);
+
+  const handleSaveCard = (card: IMarvelComics) => {
     const bookmarks = store.getState().bookmark.bookmarks;
     const index = bookmarks.findIndex((bookmark) => bookmark.id === card.id);
     if (index !== -1) {
       dispatch(removeBookmark(index));
-      setIsBookmarked(false);
     } else {
-      setIsBookmarked(true);
       dispatch(addBookmark(card));
       persistor.persist();
     }
-    console.log(store.getState().bookmark.bookmarks);
+    window.location.reload();
   };
 
   const handleTitle = _.debounce((event) => {
@@ -133,8 +139,17 @@ const Comics = () => {
     }
   };
 
+  const handleShowHideCards = () => {
+    dispatch(showAllHideCards());
+    persistor.persist();
+    setHideCard([]);
+  };
+
   return (
     <div className="container__cards--home">
+      <div>
+        <button onClick={handleShowHideCards}>Show all hide cards</button>
+      </div>
       <div>
         <div>{renderPageNumbers}</div>
         <div>
@@ -153,30 +168,32 @@ const Comics = () => {
 
       <div className="container__cards">
         {currentComics &&
-          currentComics.map((comic) => (
-            <div key={comic.id} className="container__card--character">
-              <div>
-                <img
-                  className="img__character"
-                  alt={comic.title}
-                  src={`${comic.thumbnail.path}.${comic.thumbnail.extension}`}
-                />
-              </div>
-              <div className="container__btn--title">
-                <h2>{comic.title}</h2>
-
-                <button onClick={() => handleSaveCard(comic)}>
-                  <img src={getBookmarkImageUrl(comic.id)} alt="saveCard" />
-                </button>
-                <button>
+          currentComics
+            .filter((noHide) => !hide?.some((hidden) => hidden === noHide.id))
+            .map((comic) => (
+              <div key={comic.id} className="container__card--character">
+                <div>
                   <img
-                    src="https://cdn-icons-png.flaticon.com/512/9794/9794281.png"
-                    alt="not-show"
+                    className="img__character"
+                    alt={comic.title}
+                    src={`${comic.thumbnail.path}.${comic.thumbnail.extension}`}
                   />
-                </button>
+                </div>
+                <div className="container__btn--title">
+                  <h2>{comic.title}</h2>
+
+                  <button onClick={() => handleSaveCard(comic)}>
+                    <img src={getBookmarkImageUrl(comic.id)} alt="saveCard" />
+                  </button>
+                  <button onClick={() => handleHide(comic.id)}>
+                    <img
+                      src="https://cdn-icons-png.flaticon.com/512/9794/9794281.png"
+                      alt="not-show"
+                    />
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
       </div>
     </div>
   );

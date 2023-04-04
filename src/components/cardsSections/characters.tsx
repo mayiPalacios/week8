@@ -33,7 +33,7 @@ const Characters = () => {
   const [filterbyStory, setFilterbyStory] = useState("");
   const [search, setSearch] = useState("");
   const [hide, setHideCard] = useState<number[]>();
-
+  const [isSave, setSave] = useState();
   const indexOfLastCharacter = currentPage * charactersPerPage;
   const indexOfFirstCharacter = indexOfLastCharacter - charactersPerPage;
   const currentCharacters =
@@ -115,8 +115,6 @@ const Characters = () => {
   }, 1000);
 
   const handleSaveCard = (card: IMarvelCharacter) => {
-    window.alert(card.name);
-
     const bookmarks = store.getState().bookmark.bookmarks;
     const index = bookmarks.findIndex((bookmark) => bookmark.id === card.id);
     if (index !== -1) {
@@ -125,7 +123,7 @@ const Characters = () => {
       dispatch(addBookmark(card));
       persistor.persist();
     }
-    console.log(store.getState().bookmark.bookmarks);
+    window.location.reload();
   };
 
   const handleHide = (id: number) => {
