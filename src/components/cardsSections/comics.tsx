@@ -13,6 +13,13 @@ import {
   GetComicsSuccessAction,
 } from "../../redux/ActionsMethods/comicActionType";
 import { IcomicsState } from "../../redux/useRedux/comicReducer";
+import { IMarvelComics } from "../../interfaces/InterfacesMain";
+import {
+  addBookmark,
+  removeBookmark,
+} from "../../redux/useRedux/bookMarkReducer";
+import { persistor, store } from "../../redux/store/store";
+
 let cases = "";
 
 const Comics = () => {
@@ -23,6 +30,7 @@ const Comics = () => {
   const [comicsPerPage] = useState(5);
   const [comicFormat, setFormat] = useState("");
   const [title, setTitle] = useState("");
+  const [isBookmarked, setIsBookmarked] = useState(false);
 
   const indexOfLastComic = currentPage * comicsPerPage;
   const indexOfFirstCharacter = indexOfLastComic - comicsPerPage;
@@ -82,6 +90,22 @@ const Comics = () => {
     cases = "formats";
   };
 
+  const handleSaveCard = (card: IMarvelComics) => {
+    window.alert(card.title);
+
+    const bookmarks = store.getState().bookmark.bookmarks;
+    const index = bookmarks.findIndex((bookmark) => bookmark.id === card.id);
+    if (index !== -1) {
+      dispatch(removeBookmark(index));
+      setIsBookmarked(false);
+    } else {
+      setIsBookmarked(true);
+      dispatch(addBookmark(card));
+      persistor.persist();
+    }
+    console.log(store.getState().bookmark.bookmarks);
+  };
+
   const handleTitle = _.debounce((event) => {
     if (event.target.value !== "") {
       setTitle("titleStartsWith=" + event.target.value);
@@ -98,6 +122,14 @@ const Comics = () => {
       </button>
     );
   });
+
+  const getBookmarkImageUrl = () => {
+    if (isBookmarked) {
+      return "https://cdn-icons-png.flaticon.com/512/5662/5662990.png";
+    } else {
+      return "https://cdn-icons-png.flaticon.com/512/5668/5668020.png";
+    }
+  };
 
   return (
     <div className="container__cards--home">
@@ -128,8 +160,19 @@ const Comics = () => {
                   src={`${comic.thumbnail.path}.${comic.thumbnail.extension}`}
                 />
               </div>
+              <div className="container__btn--title">
+                <h2>{comic.title}</h2>
 
-              <h2>{comic.title}</h2>
+                <button onClick={() => handleSaveCard(comic)}>
+                  <img src={getBookmarkImageUrl()} alt="saveCard" />
+                </button>
+                <button>
+                  <img
+                    src="https://cdn-icons-png.flaticon.com/512/9794/9794281.png"
+                    alt="not-show"
+                  />
+                </button>
+              </div>
             </div>
           ))}
       </div>
