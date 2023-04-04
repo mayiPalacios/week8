@@ -123,11 +123,13 @@ const Comics = () => {
     );
   });
 
-  const getBookmarkImageUrl = () => {
-    if (isBookmarked) {
-      return "https://cdn-icons-png.flaticon.com/512/5662/5662990.png";
-    } else {
+  const getBookmarkImageUrl = (idCharacter: number) => {
+    const exist = store.getState().bookmark.bookmarks;
+    const favorite = exist.findIndex((favorite) => favorite.id === idCharacter);
+    if (favorite !== -1) {
       return "https://cdn-icons-png.flaticon.com/512/5668/5668020.png";
+    } else {
+      return "https://cdn-icons-png.flaticon.com/512/5662/5662990.png";
     }
   };
 
@@ -164,7 +166,7 @@ const Comics = () => {
                 <h2>{comic.title}</h2>
 
                 <button onClick={() => handleSaveCard(comic)}>
-                  <img src={getBookmarkImageUrl()} alt="saveCard" />
+                  <img src={getBookmarkImageUrl(comic.id)} alt="saveCard" />
                 </button>
                 <button>
                   <img

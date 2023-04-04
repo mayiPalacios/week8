@@ -32,7 +32,6 @@ const Characters = () => {
   const [filterbyComic, setFilterbycomic] = useState("");
   const [filterbyStory, setFilterbyStory] = useState("");
   const [search, setSearch] = useState("");
-  const [isBookmarked, setIsBookmarked] = useState(false);
   const [hide, setHideCard] = useState<number[]>();
 
   const indexOfLastCharacter = currentPage * charactersPerPage;
@@ -122,9 +121,7 @@ const Characters = () => {
     const index = bookmarks.findIndex((bookmark) => bookmark.id === card.id);
     if (index !== -1) {
       dispatch(removeBookmark(index));
-      setIsBookmarked(false);
     } else {
-      setIsBookmarked(true);
       dispatch(addBookmark(card));
       persistor.persist();
     }
@@ -143,11 +140,13 @@ const Characters = () => {
     setHideCard([]);
   };
 
-  const getBookmarkImageUrl = () => {
-    if (isBookmarked) {
-      return "https://cdn-icons-png.flaticon.com/512/5662/5662990.png";
-    } else {
+  const getBookmarkImageUrl = (idCharacter: number) => {
+    const exist = store.getState().bookmark.bookmarks;
+    const favorite = exist.findIndex((favorite) => favorite.id === idCharacter);
+    if (favorite !== -1) {
       return "https://cdn-icons-png.flaticon.com/512/5668/5668020.png";
+    } else {
+      return "https://cdn-icons-png.flaticon.com/512/5662/5662990.png";
     }
   };
 
@@ -206,6 +205,7 @@ const Characters = () => {
             <option value="405">Original Sin</option>
           </select>
         </div>
+
         <div>
           <input
             type="text"
@@ -232,7 +232,10 @@ const Characters = () => {
                   <h2>{character.name}</h2>
 
                   <button onClick={() => handleSaveCard(character)}>
-                    <img src={getBookmarkImageUrl()} alt="saveCard" />
+                    <img
+                      src={getBookmarkImageUrl(character.id)}
+                      alt="saveCard"
+                    />
                   </button>
                   <button onClick={() => handleHide(character.id)}>
                     <img
