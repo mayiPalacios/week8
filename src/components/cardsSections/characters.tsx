@@ -159,6 +159,11 @@ const Characters = () => {
     setHideCard(store.getState().hideCard.id);
   }, []);
 
+  const handleDetails = (idCard: number) => {
+    localStorage.setItem("keyDetails", JSON.stringify(idCard));
+    window.alert(idCard);
+  };
+
   return (
     <div className="container__cards--home">
       <div>
@@ -217,7 +222,11 @@ const Characters = () => {
           currentCharacters
             .filter((noHide) => !hide?.some((hidden) => hidden === noHide.id))
             .map((character) => (
-              <div key={character.id} className="container__card--character">
+              <div
+                key={character.id}
+                onClick={() => handleDetails(character.id)}
+                className="container__card--character"
+              >
                 <div>
                   <img
                     className="img__character"
