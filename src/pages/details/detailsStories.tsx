@@ -58,6 +58,7 @@ const DetailsStories = () => {
               <div className="div__details--post">{comic.name}</div>
             ))}
           </div>
+
           <div className="container__info">
             <span>Characters</span>
             {details.details[0].characters.items.map((character) => (
