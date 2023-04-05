@@ -1,6 +1,7 @@
 import {
   IMarvelApiDetails,
   IMarvelApiDetailsComic,
+  IMarvelApiDetailsStory,
 } from "../interfaces/InterfacesMain";
 import {
   IMarvelApiResponse,
@@ -133,9 +134,9 @@ export const getStoriesbyCharacter = async (character: string) => {
   }
 };
 
-export const getStoryDetails = async (id: number) => {
+export const getStoryDetails = async (id: string) => {
   try {
-    const request = await get<IMarvelApiResponseStories>(
+    const request = await get<IMarvelApiDetailsStory>(
       `https://gateway.marvel.com:443/v1/public/stories/${id}?ts=1&apikey=cbd39dee0e578971ee9c3d1d61b054b1&hash=7c649688aa1cf28e7e8fd4db0c2603a0`
     );
     return request.data.data?.results;

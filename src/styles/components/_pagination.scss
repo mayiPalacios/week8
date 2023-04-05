@@ -1,0 +1,98 @@
+.pagination__btn {
+  height: 5vh;
+  width: 4vw;
+  background-color: cadetblue;
+  color: #fff;
+}
+
+.container__pagination--btn {
+  display: flex;
+  gap: 20px;
+  button:hover {
+    cursor: pointer;
+  }
+}
+
+.container__filters {
+  display: flex;
+  gap: 12px;
+  flex-direction: row-reverse;
+  margin-right: 30vw;
+  margin-top: 20px;
+  input {
+    height: 5vh;
+    width: 12vw;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+  }
+  select {
+    height: 5vh;
+    border-radius: 12px;
+  }
+  select:hover {
+    cursor: pointer;
+  }
+}
+
+.container__filters--comic {
+  display: flex;
+  gap: 12px;
+  flex-direction: row-reverse;
+  margin-right: 20vw;
+  margin-top: 20px;
+  input {
+    height: 5vh;
+    width: 12vw;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+  }
+  select {
+    height: 5vh;
+    border-radius: 12px;
+  }
+  select:hover {
+    cursor: pointer;
+  }
+}
+
+.container__pagination--comic {
+  display: flex;
+  gap: 20px;
+
+  button:hover {
+    cursor: pointer;
+  }
+}
+
+.container__filters--story {
+  display: flex;
+  gap: 15px;
+  flex-direction: row-reverse;
+  margin-right: 5vw;
+  margin-top: 20px;
+  input {
+    height: 5vh;
+    width: 12vw;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+  }
+  select {
+    height: 5vh;
+    border-radius: 12px;
+  }
+  select:hover {
+    cursor: pointer;
+  }
+}
+
+.container__pagination--story {
+  display: flex;
+  gap: 20px;
+
+  button:hover {
+    cursor: pointer;
+  }
+}

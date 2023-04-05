@@ -47,6 +47,14 @@ export interface IMarvelApiDetailsComic {
   } | null;
 }
 
+export interface IMarvelApiDetailsStory {
+  code: number;
+  status: string;
+  data: {
+    results: IStoryDetails;
+  } | null;
+}
+
 export interface IMarvelApiResponseComics {
   code: number;
   status: string;
@@ -111,5 +119,18 @@ export interface IMarvelStories {
   thumbnail: {
     path: string;
     extension: string;
+  };
+}
+
+export interface IStoryDetails extends IMarvelStories {
+  resourceURI: string;
+
+  characters: {
+    items: Character[];
+  };
+  comics: {
+    available: number;
+    collectionURI: string;
+    items: Comic[];
   };
 }

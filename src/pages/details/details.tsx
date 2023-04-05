@@ -48,23 +48,27 @@ const Details = () => {
 
   return (
     <section className="container__section--info">
-      <div id="section__games--elements">
-        {details.details.length > 0 ? details.details[0].name : ""}
+      <div className="container_details">
         <img
           alt=""
-          id="img__post--games"
+          id="img__detail"
           src={`${details.details[0].thumbnail.path}.${details.details[0].thumbnail.extension}`}
         />
-        <span>Comics</span>
+        <h2> {details.details.length > 0 ? details.details[0].name : ""}</h2>
+        <div className="container__info">
+          <span>Comics</span>
 
-        {details.details[0].comics.items.map((comic) => (
-          <div>{comic.name}</div>
-        ))}
+          {details.details[0].comics.items.map((comic) => (
+            <div className="div__details--post">{comic.name}</div>
+          ))}
+        </div>
 
-        <span>Stories</span>
-        {details.details[0].stories.items.map((story) => (
-          <div>{story.name}</div>
-        ))}
+        <div className="container__info">
+          <span>Stories</span>
+          {details.details[0].stories.items.map((story) => (
+            <div className="div__details">{story.name}</div>
+          ))}
+        </div>
       </div>
     </section>
   );
