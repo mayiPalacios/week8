@@ -3,7 +3,7 @@ import { State } from "../../redux/useRedux";
 import { useEffect, useState } from "react";
 import _ from "lodash";
 import { useNavigate } from "react-router-dom";
-import { hideCard, showAllHideCards } from "../../redux/useRedux/hideReducer";
+import { hideCard } from "../../redux/useRedux/hideReducer";
 import {
   getComicbyFormat,
   getComicbyTitle,
@@ -125,7 +125,11 @@ const Comics = () => {
 
   const renderPageNumbers = pageNumbers.map((number) => {
     return (
-      <button key={number} onClick={() => setCurrentPage(number)}>
+      <button
+        className="pagination__btn"
+        key={number}
+        onClick={() => setCurrentPage(number)}
+      >
         {number}
       </button>
     );
@@ -141,12 +145,6 @@ const Comics = () => {
     }
   };
 
-  const handleShowHideCards = () => {
-    dispatch(showAllHideCards());
-    persistor.persist();
-    setHideCard([]);
-  };
-
   const handleDetails = (idCard: number) => {
     localStorage.setItem("keyDetails", JSON.stringify(idCard));
     navigate("/details-comic");
@@ -154,11 +152,8 @@ const Comics = () => {
 
   return (
     <div className="container__cards--home">
-      <div>
-        <button onClick={handleShowHideCards}>Show all hide cards</button>
-      </div>
-      <div>
-        <div>{renderPageNumbers}</div>
+      <div className="container__filters--comic">
+        <div className="container__pagination--comic">{renderPageNumbers}</div>
         <div>
           <select name="" id="" onChange={handleFormat}>
             <option value="">Select comic format</option>
@@ -178,13 +173,10 @@ const Comics = () => {
           currentComics
             .filter((noHide) => !hide?.some((hidden) => hidden === noHide.id))
             .map((comic) => (
-              <div
-                key={comic.id}
-                onClick={() => handleDetails(comic.id)}
-                className="container__card--character"
-              >
+              <div key={comic.id} className="container__card--character">
                 <div>
                   <img
+                    onClick={() => handleDetails(comic.id)}
                     className="img__character"
                     alt={comic.title}
                     src={`${comic.thumbnail.path}.${comic.thumbnail.extension}`}
