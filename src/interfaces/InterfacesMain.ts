@@ -16,6 +16,37 @@ export interface IMarvelCharacter {
   };
 }
 
+interface Comic {
+  resourceURI: string;
+  name: string;
+}
+
+interface Story {
+  resourceURI: string;
+  name: string;
+}
+
+interface Character {
+  resourceURI: string;
+  name: string;
+}
+
+export interface IMarvelApiDetails {
+  code: number;
+  status: string;
+  data: {
+    results: ICharacterDetails;
+  } | null;
+}
+
+export interface IMarvelApiDetailsComic {
+  code: number;
+  status: string;
+  data: {
+    results: IComicDetails;
+  } | null;
+}
+
 export interface IMarvelApiResponseComics {
   code: number;
   status: string;
@@ -31,6 +62,33 @@ export interface IMarvelComics {
   thumbnail: {
     path: string;
     extension: string;
+  };
+}
+
+export interface ICharacterDetails extends IMarvelCharacter {
+  resourceURI: string;
+  comics: {
+    available: number;
+    collectionURI: string;
+    items: Comic[];
+  };
+  stories: {
+    available: number;
+    collectionURI: string;
+    items: Story[];
+  };
+}
+
+export interface IComicDetails extends IMarvelComics {
+  resourceURI: string;
+
+  characters: {
+    items: Character[];
+  };
+  stories: {
+    available: number;
+    collectionURI: string;
+    items: Story[];
   };
 }
 
