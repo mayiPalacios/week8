@@ -6,6 +6,7 @@ import { GET_CHARACTERS_REQUEST } from "../../redux/ActionsMethods/characterActi
 import { useEffect, useState } from "react";
 import _ from "lodash";
 import { IcharactersState } from "../../redux/useRedux/characterReducer";
+import { useNavigate } from "react-router-dom";
 import {
   getCharacterCards,
   getCharacterbyName,
@@ -27,6 +28,7 @@ const Characters = () => {
   ) as IcharactersState;
   const dispatch = useDispatch();
 
+  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [charactersPerPage] = useState(5);
   const [filterbyComic, setFilterbycomic] = useState("");
@@ -161,7 +163,7 @@ const Characters = () => {
 
   const handleDetails = (idCard: number) => {
     localStorage.setItem("keyDetails", JSON.stringify(idCard));
-    window.alert(idCard);
+    navigate("/details");
   };
 
   return (

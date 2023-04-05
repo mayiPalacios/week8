@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { State } from "../../redux/useRedux";
 import { useEffect, useState } from "react";
 import _ from "lodash";
+import { useNavigate } from "react-router-dom";
 import { hideCard, showAllHideCards } from "../../redux/useRedux/hideReducer";
 import {
   getComicbyFormat,
@@ -26,6 +27,7 @@ let cases = "";
 const Comics = () => {
   const comics = useSelector((state: State) => state.comics) as IcomicsState;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [comicsPerPage] = useState(5);
@@ -145,6 +147,11 @@ const Comics = () => {
     setHideCard([]);
   };
 
+  const handleDetails = (idCard: number) => {
+    localStorage.setItem("keyDetails", JSON.stringify(idCard));
+    navigate("/details-comic");
+  };
+
   return (
     <div className="container__cards--home">
       <div>
@@ -171,7 +178,11 @@ const Comics = () => {
           currentComics
             .filter((noHide) => !hide?.some((hidden) => hidden === noHide.id))
             .map((comic) => (
-              <div key={comic.id} className="container__card--character">
+              <div
+                key={comic.id}
+                onClick={() => handleDetails(comic.id)}
+                className="container__card--character"
+              >
                 <div>
                   <img
                     className="img__character"
