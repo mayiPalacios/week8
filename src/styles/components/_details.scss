@@ -1,0 +1,94 @@
+section {
+  margin: 0;
+  border: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("https://fpttelecom.net/wp-content/uploads/2022/05/maxresdefault.jpg");
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .container_details {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    width: 30vw;
+    background-color: gray;
+    img {
+      height: 50vh;
+    }
+  }
+
+  .container__info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    .div__details--post {
+      background-color: plum;
+      margin: 12px;
+      padding: 12px;
+      border-radius: 22px;
+    }
+    .div__details {
+      background-color: green;
+      margin: 12px;
+      padding: 12px;
+      border-radius: 22px;
+    }
+    span {
+      margin: 12px;
+      padding: 12px;
+      font-size: 25px;
+      color: #fff;
+    }
+  }
+}
+
+body {
+  margin: 0;
+}
+
+.container__section--comic {
+  margin: 0;
+  border: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("https://fpttelecom.net/wp-content/uploads/2022/05/maxresdefault.jpg");
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .container_details {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: 87.5vh;
+    width: 30vw;
+    background-color: gray;
+    img {
+      height: 50vh;
+    }
+  }
+
+  .container__info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    .div__details--post {
+      background-color: plum;
+      margin: 12px;
+      padding: 12px;
+      border-radius: 22px;
+    }
+    .div__details {
+      background-color: green;
+      margin: 12px;
+      padding: 12px;
+      border-radius: 22px;
+    }
+    span {
+      margin: 12px;
+      padding: 12px;
+      font-size: 25px;
+      color: #fff;
+    }
+  }
+}
