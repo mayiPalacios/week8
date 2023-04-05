@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { State } from "../../redux/useRedux";
 import { useEffect, useState } from "react";
 import { IstoriesState } from "../../redux/useRedux/storiesReducer";
-import _ from "lodash";
+import { useNavigate } from "react-router-dom";
 import {
   GET_STORIES_REQUEST,
   GetStoriesSuccessAction,
@@ -19,6 +19,7 @@ const Stories = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [storyPerPage] = useState(5);
+  const navigate = useNavigate();
 
   const indexOfLastStory = currentPage * storyPerPage;
   const indexOfFirStory = indexOfLastStory - storyPerPage;
@@ -36,7 +37,11 @@ const Stories = () => {
 
   const renderPageNumbers = pageNumbers.map((number) => {
     return (
-      <button key={number} onClick={() => setCurrentPage(number)}>
+      <button
+        className="pagination__btn"
+        key={number}
+        onClick={() => setCurrentPage(number)}
+      >
         {number}
       </button>
     );
@@ -78,11 +83,15 @@ const Stories = () => {
 
     cases = "character";
   };
+  const handleDetails = (idCard: number) => {
+    localStorage.setItem("keyDetails", JSON.stringify(idCard));
+    navigate("/details-story");
+  };
 
   return (
     <div className="container__cards--home">
-      <div>
-        <div>{renderPageNumbers}</div>
+      <div className="container__filters--story">
+        <div className="container__pagination--story">{renderPageNumbers}</div>
         <div>
           <select name="" id="" onChange={handleCharacter}>
             <option value="">select character</option>
@@ -97,7 +106,11 @@ const Stories = () => {
       <div className="container__cards--story">
         {currentStory &&
           currentStory.map((story) => (
-            <div key={story.id} className="container__card--story">
+            <div
+              onClick={() => handleDetails(story.id)}
+              key={story.id}
+              className="container__card--story"
+            >
               <h2>{story.title}</h2>
             </div>
           ))}

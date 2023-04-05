@@ -49,27 +49,41 @@ const DetailsComic = () => {
 
   return (
     <div className="container__section--comic">
-      <div className="container_details">
-        <img
-          alt=""
-          id="img__detail"
-          src={`${details.details[0].thumbnail.path}.${details.details[0].thumbnail.extension}`}
-        />
+      {details.details.length > 0 ? (
+        <div className="container_details">
+          <img
+            alt=""
+            id="img__detail"
+            src={`${
+              details.details.length > 0
+                ? details.details[0].thumbnail.path
+                : ""
+            }.${
+              details.details.length > 0
+                ? details.details[0].thumbnail.extension
+                : ""
+            }`}
+          />
 
-        <h2> {details.details.length > 0 ? details.details[0].title : ""}</h2>
-        <div className="container__info">
-          <span>Characters</span>
-          {details.details[0].characters.items.map((comic) => (
-            <div className="div__details--post">{comic.name}</div>
-          ))}
+          <h2> {details.details.length > 0 ? details.details[0].title : ""}</h2>
+          <div className="container__info">
+            <span>Characters</span>
+            {details.details[0].characters.items.map((comic) => (
+              <div className="div__details--post">{comic.name}</div>
+            ))}
+          </div>
+          <div className="container__info">
+            <span>Stories</span>
+            {details.details.length > 0
+              ? details.details[0].stories.items.map((comic) => (
+                  <div className="div__details">{comic.name}</div>
+                ))
+              : ""}
+          </div>
         </div>
-        <div className="container__info">
-          <span>Stories</span>
-          {details.details[0].stories.items.map((comic) => (
-            <div className="div__details">{comic.name}</div>
-          ))}
-        </div>
-      </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 };

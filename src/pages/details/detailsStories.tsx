@@ -23,7 +23,7 @@ const DetailsStories = () => {
       try {
         const idcard = localStorage.getItem("keyDetails");
         if (idcard !== null) {
-          const request = getStoryDetails(idcard);
+          const request = await getStoryDetails(idcard);
           const results = request;
           if (results !== undefined) {
             const action: GetDetailsSuccessAction = {
@@ -46,25 +46,28 @@ const DetailsStories = () => {
   }, [dispatch]);
 
   return (
-    <section className="container__section--info">
-      <div id="section__games--elements">
-        {details.details.length > 0 ? details.details[0].name : ""}
-        <img
-          alt=""
-          id="img__post--games"
-          src={`${details.details[0].thumbnail.path}.${details.details[0].thumbnail.extension}`}
-        />
-        <span>Comics</span>
+    <section className="container_details-story">
+      {details.details.length > 0 ? (
+        <div className="container__story">
+          <h2> {details.details.length > 0 ? details.details[0].title : ""}</h2>
 
-        {details.details[0].comics.items.map((comic) => (
-          <div>{comic.name}</div>
-        ))}
+          <div className="container__info">
+            <span>Comics</span>
 
-        <span>Stories</span>
-        {details.details[0].stories.items.map((story) => (
-          <div>{story.name}</div>
-        ))}
-      </div>
+            {details.details[0].comics.items.map((comic) => (
+              <div className="div__details--post">{comic.name}</div>
+            ))}
+          </div>
+          <div className="container__info">
+            <span>Characters</span>
+            {details.details[0].characters.items.map((character) => (
+              <div className="div__details">{character.name}</div>
+            ))}
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
     </section>
   );
 };

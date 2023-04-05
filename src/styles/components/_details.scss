@@ -92,3 +92,15 @@ body {
     }
   }
 }
+
+.container_details-story {
+}
+
+.container__story {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  min-height: 87.5vh;
+  width: 30vw;
+  background-color: gray;
+}
