@@ -151,7 +151,11 @@ const Characters = () => {
 
   const renderPageNumbers = pageNumbers.map((number) => {
     return (
-      <button key={number} onClick={() => setCurrentPage(number)}>
+      <button
+        className="pagination__btn"
+        key={number}
+        onClick={() => setCurrentPage(number)}
+      >
         {number}
       </button>
     );
@@ -168,11 +172,8 @@ const Characters = () => {
 
   return (
     <div className="container__cards--home">
-      <div>
-        <button onClick={handleShowHideCards}>Show all hide cards</button>
-      </div>
-      <div>
-        <div>{renderPageNumbers}</div>
+      <div className="container__filters">
+        <div className="container__pagination--btn">{renderPageNumbers}</div>
         <div>
           <select
             name="select__character--comic"
@@ -215,6 +216,7 @@ const Characters = () => {
             type="text"
             id="inpt__search--character"
             onChange={handleCharacterbyName}
+            placeholder="character"
           />
         </div>
       </div>
@@ -224,13 +226,10 @@ const Characters = () => {
           currentCharacters
             .filter((noHide) => !hide?.some((hidden) => hidden === noHide.id))
             .map((character) => (
-              <div
-                key={character.id}
-                onClick={() => handleDetails(character.id)}
-                className="container__card--character"
-              >
+              <div key={character.id} className="container__card--character">
                 <div>
                   <img
+                    onClick={() => handleDetails(character.id)}
                     className="img__character"
                     alt={character.name}
                     src={`${character.thumbnail.path}.${character.thumbnail.extension}`}

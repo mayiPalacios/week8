@@ -1,0 +1,31 @@
+.container__header {
+  width: 100%;
+  background-color: black;
+  display: flex;
+
+  #header__logo {
+    width: 22vw;
+    padding-left: 40vw;
+    height: 12vh;
+    margin-bottom: 0;
+  }
+  .container__btn--header {
+    display: flex;
+    padding-left: 12vw;
+    gap: 12px;
+    padding-top: 20px;
+    button {
+      background-color: black;
+      color: #fff;
+      border: none;
+      gap: 12px;
+      height: 8vh;
+      img {
+        height: 8vh;
+      }
+    }
+    button:hover {
+      cursor: pointer;
+    }
+  }
+}

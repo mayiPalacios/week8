@@ -36,7 +36,11 @@ const Stories = () => {
 
   const renderPageNumbers = pageNumbers.map((number) => {
     return (
-      <button key={number} onClick={() => setCurrentPage(number)}>
+      <button
+        className="pagination__btn"
+        key={number}
+        onClick={() => setCurrentPage(number)}
+      >
         {number}
       </button>
     );
@@ -81,8 +85,8 @@ const Stories = () => {
 
   return (
     <div className="container__cards--home">
-      <div>
-        <div>{renderPageNumbers}</div>
+      <div className="container__filters--story">
+        <div className="container__pagination--story">{renderPageNumbers}</div>
         <div>
           <select name="" id="" onChange={handleCharacter}>
             <option value="">select character</option>
