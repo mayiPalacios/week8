@@ -1,34 +1,35 @@
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../../redux/useRedux";
 import { useEffect } from "react";
+import { getComicDetails } from "../../utils/fetchMethods";
 import {
-  GET_DETAIL_FAILURE,
-  GET_DETAIL_REQUEST,
-} from "../../redux/ActionsMethods/characterDetailTypes";
-import { getCharacterDetails } from "../../utils/fetchMethods";
-import { GetDetailsSuccessAction } from "../../redux/ActionsMethods/characterDetailTypes";
-import { GET_DETAIL_SUCCESS } from "../../redux/ActionsMethods/characterDetailTypes";
-import { IDetailsState } from "../../redux/useRedux/detailCharacterReducer";
+  GET_DETAIL_FAILURE_COMIC,
+  GetDetailsSuccessAction,
+} from "../../redux/ActionsMethods/comicDetailTypes";
+import { IDetailsState } from "../../redux/useRedux/detailComicReducer";
+import {
+  GET_DETAIL_REQUEST_COMIC,
+  GET_DETAIL_SUCCESS_COMIC,
+} from "../../redux/ActionsMethods/comicDetailTypes";
 
-const Details = () => {
+const DetailsComic = () => {
   const dispatch = useDispatch();
   const details = useSelector(
-    (state: State) => state.characterDetails
+    (state: State) => state.comicDetails
   ) as IDetailsState;
-  console.log(details.details);
 
   useEffect(() => {
     const fetchCharacter = async () => {
-      dispatch({ type: GET_DETAIL_REQUEST });
+      dispatch({ type: GET_DETAIL_REQUEST_COMIC });
 
       try {
         const idcard = localStorage.getItem("keyDetails");
         if (idcard !== null) {
-          const request = await getCharacterDetails(idcard);
+          const request = await getComicDetails(idcard);
           const results = request;
           if (results !== undefined) {
             const action: GetDetailsSuccessAction = {
-              type: GET_DETAIL_SUCCESS,
+              type: GET_DETAIL_SUCCESS_COMIC,
               payload: results,
             };
             dispatch(action);
@@ -37,7 +38,7 @@ const Details = () => {
       } catch (error) {
         if (error instanceof Error) {
           dispatch({
-            type: GET_DETAIL_FAILURE,
+            type: GET_DETAIL_FAILURE_COMIC,
             payload: error && error.message,
           });
         }
@@ -49,25 +50,23 @@ const Details = () => {
   return (
     <section className="container__section--info">
       <div id="section__games--elements">
-        {details.details.length > 0 ? details.details[0].name : ""}
         <img
           alt=""
           id="img__post--games"
           src={`${details.details[0].thumbnail.path}.${details.details[0].thumbnail.extension}`}
         />
-        <span>Comics</span>
-
-        {details.details[0].comics.items.map((comic) => (
+        {details.details.length > 0 ? details.details[0].title : ""}
+        <span>Characters</span>
+        {details.details[0].characters.items.map((comic) => (
           <div>{comic.name}</div>
         ))}
-
         <span>Stories</span>
-        {details.details[0].stories.items.map((story) => (
-          <div>{story.name}</div>
+        {details.details[0].stories.items.map((comic) => (
+          <div>{comic.name}</div>
         ))}
       </div>
     </section>
   );
 };
 
-export default Details;
+export default DetailsComic;
